@@ -128,6 +128,8 @@
             padding: 20px 60px;
             background: #f8fafc;
             border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .nav-button {
@@ -261,6 +263,8 @@
             
             .navigation {
                 padding: 15px 30px;
+                flex-wrap: wrap;
+                gap: 10px;
             }
             
             .slide h1 {
@@ -273,6 +277,70 @@
             
             .process-flow {
                 flex-direction: column;
+            }
+        }
+
+        /* PDF Print Styles */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact; /* Chrome/Safari */
+                print-color-adjust: exact;         /* Firefox */
+                background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+            }
+            
+            .presentation-container {
+                width: 100% !important;
+                max-width: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+            }
+            
+            .slide {
+                display: block !important;
+                page-break-after: always;
+                padding: 40px 20px !important;
+                min-height: auto !important;
+                background: white !important;
+            }
+            
+            .slide:last-child {
+                page-break-after: avoid;
+            }
+            
+            .navigation {
+                display: none !important;
+            }
+            
+            .slide h1 {
+                font-size: 24pt !important;
+                color: #1e40af !important;
+            }
+            
+            .slide h2 {
+                font-size: 20pt !important;
+                color: #1e40af !important;
+            }
+            
+            .slide h3 {
+                font-size: 16pt !important;
+                color: #3b82f6 !important;
+            }
+            
+            .highlight-box,
+            .stat-card,
+            .icon-card {
+                border: 1px solid #e2e8f0 !important;
+                background: #f8fafc !important;
+                box-shadow: none !important;
+            }
+            
+            .icon {
+                background: #3b82f6 !important;
+                color: white !important;
+            }
+            
+            .stat-number {
+                color: #1e40af !important;
             }
         }
     </style>
@@ -354,7 +422,7 @@
                 <div class="icon-card">
                     <div class="icon">⚙️</div>
                     <h3>Engineering</h3>
-                    <p>Process efficiency & Optimization, Data Migration, Deployment & Incident Analysis</p>
+                    <p>Process efficiency & Optimization, Data Migration, Incident Analysis</p>
                 </div>
                 <div class="icon-card">
                     <div class="icon">💼</div>
@@ -380,8 +448,8 @@
         <div class="slide">
             <h2>Real Examples: How We Help 💡</h2>
             <div class="highlight-box">
-                <h3>Marketing Success Story</h3>
-                <p>"The Data Team helped us identify our highest-converting customer segment, leading to a 35% increase in campaign ROI within 3 months."</p>
+                <h3>Accounting Success Story</h3>
+                <p>"The Data team are ever reliable to assist in brainstorming and getting to the root cause... They are very instrumental in bringing meaning to our numerous numbers"</p>
             </div>
             <div class="icon-grid">
                 <div class="icon-card">
@@ -428,7 +496,7 @@
                 <div class="process-step">
                     <div class="step-circle">1</div>
                     <h3>Reach Out</h3>
-                    <p>Slack, email, or data request portal</p>
+                    <p>Slack messages, email, or Data request form</p>
                 </div>
                 <div class="process-step">
                     <div class="step-circle">2</div>
@@ -577,7 +645,7 @@
                 <div class="icon-card">
                     <div class="icon">📚</div>
                     <h3>Quick Training</h3>
-                    <p>15-minute session on using our dashboards and tools</p>
+                    <p>15-minute session on using our dashboards and tools, if required</p>
                 </div>
                 <div class="icon-card">
                     <div class="icon">🎯</div>
@@ -624,7 +692,7 @@
                 <div class="icon-card">
                     <div class="icon">💡</div>
                     <h3>Ideas Welcome</h3>
-                    <p>What reports or dashboards would make your job easier?</p>
+                    <p>What reports or dashboards would make your job easier or can benefit the company</p>
                 </div>
             </div>
         </div>
@@ -662,6 +730,7 @@
                 <span id="currentSlide">1</span> / <span id="totalSlides">10</span>
             </span>
             <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+            <button class="nav-button" id="pdfBtn" onclick="downloadAsPDF()" style="background: #091d45;">📄  PDF</button>
         </div>
     </div>
 
@@ -698,6 +767,27 @@
                 changeSlide(1);
             }
         });
+
+        // PDF Download function
+        function downloadAsPDF() {
+            // Store current slide state
+            const currentSlide = currentSlideIndex;
+            
+            // Show all slides for printing
+            slides.forEach(slide => {
+                slide.classList.add('active');
+            });
+            
+            // Trigger print dialog
+            window.print();
+            
+            // Restore original slide state after a short delay
+            setTimeout(() => {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === currentSlide);
+                });
+            }, 100);
+        }
 
         // Initialize
         showSlide(0);
